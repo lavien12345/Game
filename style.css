@@ -1,0 +1,1045 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #030816;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.screen {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('assets/frame6-reference.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* === 中心視覺區 === */
+.center-content {
+    position: absolute;
+    /* 從原本的 55% 再往下壓到 62%，您可以依據喜好微調這個數字 (越大越下面) */
+    top: 62%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+}
+
+.game-title {
+    font-size: 7.5rem;
+    letter-spacing: 20px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0px 5px 15px rgba(0, 0, 0, 0.8), 0px 0px 20px rgba(255, 255, 255, 0.2);
+
+    /* 加入這兩行，讓字體單獨往上推 */
+    position: relative;
+    top: -40px; /* 負值越大，字就會越往上 */
+}
+
+/* === 開始按鈕設定 === */
+.btn-container {
+    margin-top: 40px;
+}
+
+#start-btn {
+    width: 520px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* 因為新圖片已經自帶很棒的發光，所以把預設的 CSS drop-shadow 拿掉，保持乾淨 */
+}
+
+#start-btn:hover {
+    transform: scale(1.05); /* 滑鼠懸停時一樣微放大 */
+    /* 懸停時稍微提高一點亮度，並補上一點光暈增強互動感 */
+    filter: brightness(1.15) drop-shadow(0 0 20px rgb(0 229 255 / 0.69));
+}
+
+/* =========================================
+   甜甜圈浮動物件設定 (位置、大小完全一模一樣)
+========================================= */
+.floating-item {
+    position: absolute;
+    z-index: 1;
+    animation: float-anim 4s ease-in-out infinite;
+    object-fit: contain;
+}
+
+.donut-green {
+    top: 15%; left: 10%; width: 16%;
+    animation-delay: 0s;
+}
+.donut-blue {
+    top: 31%; right: 24%; width: 6.5%;
+    animation-delay: 0.5s;
+}
+.donut-red {
+    top: 40%; left: 30%; width: 2.5%;
+    animation-delay: 1.2s;
+}
+.donut-pink {
+    bottom: 27%; left: 22%; width: 5%;
+    animation-delay: 0.3s;
+}
+.donut-orange {
+    bottom: 16%; right: 18%; width: 10%;
+    animation-delay: 0.8s;
+}
+
+@keyframes float-anim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); } /* 微調漂浮幅度 */
+    100% { transform: translateY(0px); }
+}
+
+/* =========================================
+   背景裝飾圖案設定 (交錯呼吸漸閃)
+========================================= */
+.floating-deco {
+    position: absolute;
+    z-index: 0;
+    animation: fade-pulse 4s ease-in-out infinite;
+}
+
+/* 1. 左側邊界十字 (綠色甜甜圈左下方) */
+.deco-cross-l {
+    top: 30%; left: -7%; width: 18%;
+    animation-delay: 0s;
+}
+
+/* 2. 左側大點陣 (左下邊緣，部分被裁切) */
+.deco-dots-l {
+    top: 46%; left: 5%; width: 18%;
+    animation-delay: 2s;
+}
+
+/* 3. T 字與紅色小甜甜圈後方的星星 */
+.deco-star-l {
+    top: 30%; left: 25%; width: 15%;
+    animation-delay: 1s;
+}
+
+/* 4. S 字右下方的點陣 */
+.deco-dots-r {
+    top: 48%; right: 26%; width: 15%;
+    animation-delay: 3s;
+}
+
+/* 5. 右上角大星星 (被畫面邊緣裁切) */
+.deco-star-r {
+    top: 18%; right: -4%; width: 16%;
+    animation-delay: 0.5s;
+}
+
+/* 6. 右側邊界十字 (藍色甜甜圈與橘色甜甜圈之間) */
+.deco-cross-r {
+    top: 55%; right: -5%; width: 18%;
+    animation-delay: 1.5s;
+}
+
+@keyframes fade-pulse {
+    0% { opacity: 0; }
+    50% { opacity: 0.7; }
+    100% { opacity: 0; }
+}
+/* =========================================
+   第二頁：難度選擇畫面設定 (固定尺寸手調版)
+========================================= */
+#difficulty-screen.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* 頂部標題 */
+.diff-title {
+    position: absolute; /* 👈 絕對定位，獨立排版 */
+    top: 60px;          /* 👈 距離螢幕最頂部的距離 (隨你微調) */
+    left: 50%;
+    transform: translateX(-50%); /* 確保水平置中 */
+
+    width: 550px;
+    filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4));
+    margin: 0; /* 清除原本的 margin */
+}
+
+/* 卡片群組容器 (控制間距與整體位置) */
+.cards-container {
+    position: absolute; /* 👈 絕對定位，獨立排版 */
+    top: 50%;           /* 👈 固定在螢幕正中間 */
+    left: 50%;
+    transform: translate(-50%, -50%); /* 確保絕對置中 */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: -10px;          /* 卡片之間的間距 */
+    margin: 0; /* 清除原本的 margin */
+}
+
+/* 個別卡片 (固定寬高，隨你調整) */
+.diff-card {
+    width: 500px;       /* 👈 藍色框框的絕對寬度 */
+    height: 610px;      /* 👈 藍色框框的絕對高度 (310x420 接近圖片微胖的比例) */
+
+    background-image: url('assets/IMG_3942.PNG');
+    background-size: 125% 125%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    padding: 0;
+    margin: 0;
+}
+
+/* 🌟 卡片放大與發光特效 */
+.diff-card:hover, .diff-card.selected {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.9));
+    z-index: 2;
+}
+
+/* 卡片上的文字 */
+.card-text {
+    position: absolute;
+    top: 85px;          /* 👈 文字距離框框頂部的距離 (往下壓就改大數值) */
+    left: -10px;
+    width: 100%;
+    text-align: center;
+
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 45px;    /* 👈 文字大小 (覺得太大可改 24px) */
+    font-weight: 500;   /* 文字粗細 */
+    color: #ffffff;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+/* 卡片中央的圖示 */
+.card-icon {
+    position: absolute;
+    top: 240px;         /* 👈 圖案距離框框頂部的距離 (數字越大越往下) */
+    left: 15%;
+    transform: translate(-50%, -50%);
+
+    width: 300px;       /* 👈 甜甜圈圖案的大小 */
+    object-fit: contain;
+    animation: float-anim 3s ease-in-out infinite;
+    margin: 0;
+}
+
+/* 錯開卡片裡圖案漂浮的時間 */
+.diff-card[data-level="easy"] .card-icon { animation-delay: 0s; }
+.diff-card[data-level="medium"] .card-icon { animation-delay: 0.5s; }
+.diff-card[data-level="hard"] .card-icon { animation-delay: 1s; }
+
+/* OK 按鈕設定 */
+.ok-btn-container {
+    position: absolute; /* 👈 絕對定位，獨立排版 */
+    bottom: 10px;       /* 👈 距離螢幕最底部的距離 (隨你微調) */
+    left: 50%;
+    transform: translateX(-50%); /* 確保水平置中 */
+    z-index: 10;
+}
+
+#ok-btn {
+    width: 350px;       /* 👈 OK 按鈕的寬度 (可依喜好微調) */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#ok-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15) drop-shadow(0 0 20px rgba(0, 229, 255, 0.8));
+}
+
+/* =========================================
+   第三頁：載入畫面設定 (固定尺寸手調版)
+========================================= */
+
+/* 藍色發光外框 */
+.loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 絕對置中 */
+
+    width: 1500px;  /* 👈 外框寬度 (覺得太窄可改 900px) */
+    height: 800px; /* 👈 外框高度 (覺得太扁可改 450px) */
+
+    background-image: url('assets/Rectangle 13.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* 🌟 消除 JPG 黑底的魔法：自動把黑色變透明，完美融合背景網格！ */
+    mix-blend-mode: screen;
+
+    /* 讓內部的 Loading 文字置中 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Loading 文字圖片 */
+.loading-text {
+    width: 750px; /* 👈 文字的寬度 (覺得太大可改小) */
+    object-fit: contain;
+
+    /* 加上微微的呼吸閃爍效果，更有「正在載入」的感覺 */
+    animation: loading-pulse 2s infinite ease-in-out;
+}
+
+/* Loading 呼吸動畫 */
+@keyframes loading-pulse {
+    0% { opacity: 0.7; filter: brightness(1); }
+    50% { opacity: 1; filter: brightness(1.3) drop-shadow(0 0 10px rgba(0, 229, 255, 0.5)); }
+    100% { opacity: 0.7; filter: brightness(1); }
+}
+
+/* =========================================
+   第四頁：Easy 任務畫面設定 (固定尺寸手調版)
+========================================= */
+
+/* Mission 標題 */
+.mission-title {
+    position: absolute;
+    top: 60px;          /* 👈 距離頂部的高度 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;       /* 👈 標題寬度 */
+    filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4));
+}
+
+/* 地板發光特效 */
+.floor-glow {
+    position: absolute;
+    bottom: 40px;       /* 👈 距離底部高度 (調整它與按鈕的距離) */
+    left:50%;
+    transform: translateX(-50%);
+    width: 1600px;      /* 👈 光暈寬度，確保能覆蓋三個甜甜圈下方 */
+    mix-blend-mode: screen; /* 🌟 消除黑底魔法 */
+    opacity: 0.85;      /* 👈 光暈強度 (0~1) */
+    pointer-events: none; /* 避免光暈圖片擋住按鈕點擊 */
+}
+
+/* 甜甜圈群組容器 (控制整體位置與間距) */
+.mission-torus-container {
+    position: absolute;
+    top: 55%;           /* 👈 垂直置中 (若想往下移可改 55%) */
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;          /* 👈 三個甜甜圈之間的間距 */
+}
+
+/* =========================================
+   單一甜甜圈組合容器
+========================================= */
+.torus-item {
+    position: relative;
+    width: 400px;       /* 👈 甜甜圈整體的容器大小 */
+    height: 400px;
+    animation: float-anim 4s ease-in-out infinite;
+}
+
+/* 錯開每個甜甜圈漂浮的時間 */
+.torus-item:nth-child(1) { animation-delay: 0s; }
+.torus-item:nth-child(2) { animation-delay: 0.8s; }
+.torus-item:nth-child(3) { animation-delay: 1.5s; }
+
+/* =========================================
+   1. 甜甜圈底圖 (填滿容器)
+========================================= */
+.torus-base {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 絕對置中 */
+
+    width: 100%; /* 底圖維持 100% 大小 */
+    height: 100%;
+    object-fit: contain;
+}
+
+/* =========================================
+   2. 表面花紋 (獨立控制縮放與位置)
+========================================= */
+.torus-pattern {
+    position: absolute;
+    top: 49%;           /* 👈 如果花紋整體偏上或偏下，微調這裡 (例如 48% 或 52%) */
+    left: 50%;          /* 👈 如果花紋整體偏左或偏右，微調這裡 */
+    transform: translate(-50%, -50%); /* 絕對置中，確保縮放時以中心為準 */
+
+    /* 👉 關鍵解法：因為花紋切圖比較緊湊，我們把它縮小到原本比例 */
+    width: 85%;         /* 👈 如果花紋還是太大超出邊緣，就把數字改小 (例如 65%, 70%)；如果太小就改大 (例如 85%) */
+    height: auto;       /* 維持花紋原本的完美比例 */
+    object-fit: contain;
+    z-index: 2;         /* 確保花紋疊在最上層 */
+}
+
+/* 底部 START 按鈕 */
+.mission-btn-container {
+    position: absolute;
+    bottom: 50px;       /* 👈 距離螢幕底部的高度 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* 底部 START 按鈕 (Easy 與 Medium 共用) */
+#mission-start-btn,
+#medium-start-btn {
+    width: 500px;       /* 👈 寬度如果您之前有改過，請改成您想要的數字 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* 加這行：讓按鈕平常就帶有微微的青色發光 */
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+}
+
+#mission-start-btn:hover,
+#medium-start-btn:hover {
+    transform: scale(1.05);
+    /* 滑鼠移過去：變得更亮、光暈更大 */
+    filter: brightness(1.15) drop-shadow(0 0 25px rgba(0, 229, 255, 0.9));
+}
+
+/* =========================================
+   Medium 頁面專屬：提示文字設定
+========================================= */
+.mission-clue {
+    position: absolute;
+    top: 200px;         /* 👈 距離頂部高度 (確保在 Mission 標題下方) */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;       /* 👈 文字寬度 (若覺得字太小可改 700px) */
+    object-fit: contain;
+    z-index: 5;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.3)); /* 微微的發光讓字體更清楚 */
+}
+/* =========================================
+   Medium 畫面專屬：花紋大小精準對齊
+========================================= */
+
+/* 左邊甜甜圈：紅色斜紋 (縮小讓它不超出邊界) */
+#medium-mission-screen .torus-item:nth-child(1) .torus-pattern {
+    width: 94%; /* 👈 如果還是突出來，就改 65%；如果太小就改 70% */
+}
+
+/* 中間甜甜圈：藍色點點 (縮小讓它完美貼合) */
+#medium-mission-screen .torus-item:nth-child(2) .torus-pattern {
+    width: 85%; /* 👈 如果還是突出來，就改 72%；如果太小就改 76% */
+}
+
+/* Hard 畫面專屬按鈕與花紋微調 */
+#hard-start-btn {
+    width: 500px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+}
+
+#hard-start-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15) drop-shadow(0 0 25px rgba(0, 229, 255, 0.9));
+}
+
+/* 調整 Hard 畫面中間的紅色斜紋大小 (避免超出邊界) */
+#hard-mission-screen .torus-item:nth-child(2) .torus-pattern {
+    width: 85%;
+}
+/* =========================================
+   第七頁：遊戲進行畫面 (Game Play)
+========================================= */
+
+/* 中央計時器 (使用 Orbitron 字體呈現數位感) */
+#game-timer {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 55px;
+    color: #00E5FF;
+    letter-spacing: 8px;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.8), 0 0 10px rgba(0, 229, 255, 0.5);
+    z-index: 10;
+}
+
+/* 左右科幻玻璃面板 */
+.side-panel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 180px;
+    min-height: 75vh;
+    background: linear-gradient(180deg, rgba(0, 15, 30, 0.7) 0%, rgba(0, 8, 20, 0.85) 100%);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 16px;
+    box-shadow:
+        0 0 30px rgba(0, 229, 255, 0.08),
+        inset 0 0 30px rgba(0, 229, 255, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px;
+    z-index: 5;
+    overflow-y: auto;
+}
+
+/* 面板頂部裝飾線 */
+.side-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.6), transparent);
+    border-radius: 2px;
+}
+
+.left-panel { left: 3vw; }
+.right-panel { right: 3vw; }
+
+/* 面板標題 */
+.panel-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(0, 229, 255, 0.8);
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+    width: 100%;
+    text-align: center;
+}
+
+/* 球體網格排版 */
+.orb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    justify-items: center;
+    width: 100%;
+}
+
+/* 🎨 顏色選擇球 - 霓虹環形甜甜圈風格 */
+.color-orb {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, #ffffff 3%, var(--orb-light) 20%, var(--orb-dark) 70%, #000000 100%);
+    box-shadow:
+        0 0 0 2px rgba(0, 229, 255, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.6),
+        inset 0 0 8px rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+/* 顏色球外圈霓虹 */
+.color-orb::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.color-orb:hover {
+    transform: scale(1.15);
+    box-shadow:
+        0 0 0 2px rgba(0, 229, 255, 0.3),
+        0 0 20px var(--orb-light),
+        0 0 40px var(--orb-dark),
+        0 4px 12px rgba(0, 0, 0, 0.6),
+        inset 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+/* 🌀 花紋選擇球 - 迷你甜甜圈黑色全像顯示器 */
+.pattern-orb {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 35%, #3a3a3a 5%, #111111 60%, #000000 100%);
+    box-shadow:
+        0 0 0 2px rgba(0, 229, 255, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.6),
+        inset 0 0 10px rgba(0, 229, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.pattern-orb::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.pattern-orb:hover {
+    transform: scale(1.15);
+    box-shadow:
+        0 0 0 2px rgba(0, 229, 255, 0.3),
+        0 0 20px rgba(0, 229, 255, 0.2),
+        0 0 40px rgba(0, 229, 255, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.6),
+        inset 0 0 15px rgba(0, 229, 255, 0.08);
+}
+
+.pattern-inside {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    filter: brightness(1.3) contrast(1.1);
+}
+
+/* 選取狀態 - 統一樣式 */
+.color-orb.active-brush::after,
+.pattern-orb.active-brush::after {
+    border-color: #ffffff;
+}
+
+.color-orb.active-brush,
+.pattern-orb.active-brush {
+    transform: scale(1.2);
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.6),
+        0 0 20px rgba(0, 229, 255, 0.5),
+        0 0 45px rgba(0, 229, 255, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* 中央遊戲區甜甜圈排版微調 */
+#game-play-screen .game-torus-container {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 40px;
+}
+.game-torus-item {
+    position: relative;
+    width: 250px; /* 遊戲區的甜甜圈稍小一點 */
+    height: 250px;
+    animation: float-anim 4s ease-in-out infinite;
+}
+.game-torus-item:nth-child(2) { animation-delay: 0.5s; }
+.game-torus-item:nth-child(3) { animation-delay: 1s; }
+
+#game-play-screen .floor-glow {
+    bottom: 80px; /* 光暈稍微往上移 */
+    width: 1200px;
+}
+
+#game-ok-btn {
+    width: 340px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+}
+#game-ok-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15) drop-shadow(0 0 20px rgba(0, 229, 255, 0.9));
+}
+/* =========================================
+   畫筆選取狀態與染色魔法 (Game Play 特效)
+========================================= */
+
+
+/* 遊戲畫面的甜甜圈容器，滑鼠移過去會有提示 */
+.game-torus-item {
+    position: relative;
+    cursor: url('assets/Rectangle11.png'), pointer; /* 讓滑鼠看起來可以點擊 */
+}
+.game-torus-item:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+}
+.game-torus-item .torus-base {
+    width: 100%;
+    height: 100%;
+}
+
+/* 讓拖曳中的筆刷變成半透明 */
+[draggable="true"] {
+    cursor: grab;
+}
+
+[draggable="true"]:active {
+    cursor: grabbing;
+    opacity: 0.5;
+}
+
+/* 甜甜圈在被拖曳經過時稍微變大，提示玩家可以放開 */
+.game-torus-item:hover {
+    filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.6));
+    transform: scale(1.1);
+}
+/* 染色層：確保顏色能疊加在白色的底圖上 */
+.color-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    height: 100%;
+
+    background-color: transparent; /* JavaScript 會動態改變這裡 */
+
+    opacity: 0.8;
+
+    /* 遮罩：跟底圖完全貼合，顏色只顯示在甜甜圈範圍內 */
+    -webkit-mask-image: url('assets/Rectangle11.png');
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url('assets/Rectangle11.png');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    mix-blend-mode: multiply;
+
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 圖案層：疊加在最上方 */
+.pattern-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: none;
+
+    /* 跟底圖貼合，圖案也只顯示在甜甜圈範圍內 */
+    -webkit-mask-image: url('assets/Rectangle11.png');
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url('assets/Rectangle11.png');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 遊戲結算畫面容器 */
+.record-container {
+    width: 600px;
+    padding: 40px;
+    background: rgba(0, 100, 150, 0.2);
+    border: 2px solid #00E5FF;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+    color: white;
+    text-align: center;
+}
+
+.record-title { font-size: 32px; margin-bottom: 30px; color: #00E5FF; }
+
+/* 圖表樣式 */
+.line-chart { width: 100%; height: 150px; }
+
+/* 統計方塊 */
+.stats-box {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.stat {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    width: 40%;
+}
+.stat strong { display: block; font-size: 36px; color: #00E5FF; }
+
+/* =========================================
+   結算畫面 - 科幻玻璃卡牌
+========================================= */
+.record-glass {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 620px;
+    padding: 40px 50px 35px;
+
+    background: rgba(0, 20, 40, 0.5);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 24px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 0 40px rgba(0, 229, 255, 0.15),
+        inset 0 0 40px rgba(0, 229, 255, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation: record-fade-in 0.6s ease-out;
+}
+
+@keyframes record-fade-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.record-header {
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.record-title-glow {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: #ffffff;
+    text-shadow:
+        0 0 10px rgba(0, 229, 255, 0.8),
+        0 0 30px rgba(0, 229, 255, 0.4),
+        0 0 60px rgba(0, 229, 255, 0.2);
+    margin: 0;
+}
+
+.record-divider {
+    width: 120px;
+    height: 2px;
+    margin: 12px auto 0;
+    background: linear-gradient(90deg, transparent, #00E5FF, transparent);
+    border-radius: 2px;
+}
+
+/* 三張統計卡 */
+.record-stats {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    flex: 1;
+    background: rgba(0, 40, 70, 0.4);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 16px;
+    padding: 16px 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: card-pop 0.5s ease-out backwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.25s; }
+.stat-card:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes card-pop {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.2);
+}
+
+.stat-time { border-color: rgba(0, 229, 255, 0.5); }
+.stat-score { border-color: rgba(255, 215, 0, 0.5); }
+.stat-rank { border-color: rgba(255, 100, 100, 0.5); }
+
+.stat-icon {
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.stat-time .stat-value { color: #00E5FF; text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+.stat-score .stat-value { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+.stat-rank .stat-value { color: #FF6B6B; text-shadow: 0 0 10px rgba(255, 100, 100, 0.5); }
+
+/* 迷你圖表 */
+.record-chart {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 25px;
+    opacity: 0.6;
+}
+
+/* 底部按鈕 */
+.record-ok-btn {
+    width: 280px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+}
+
+.record-ok-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15) drop-shadow(0 0 25px rgba(0, 229, 255, 0.8));
+}
+
+/* =========================================
+   錯誤提示浮層
+========================================= */
+.error-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.error-overlay.active {
+    display: flex;
+}
+
+.error-box {
+    background: rgba(30, 10, 10, 0.85);
+    border: 2px solid rgba(255, 50, 50, 0.6);
+    border-radius: 24px;
+    padding: 40px 60px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.3), inset 0 0 30px rgba(255, 0, 0, 0.1);
+    animation: error-shake 0.4s ease-out;
+}
+
+@keyframes error-shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-15px); }
+    40% { transform: translateX(15px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.error-icon {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 10px;
+    color: #FF4444;
+    text-shadow: 0 0 20px rgba(255, 50, 50, 0.6);
+}
+
+.error-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #FF4444;
+    text-shadow: 0 0 15px rgba(255, 50, 50, 0.5);
+    margin-bottom: 10px;
+}
+
+.error-desc {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* 甜甜圈容器本身負責接收點擊 */
+.game-torus-item {
+    position: relative;
+    cursor: pointer;
+    /* 確保這層可以接收 click 和 drop */
+    pointer-events: auto;
+}
+

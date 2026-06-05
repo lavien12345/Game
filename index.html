@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TORUS Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="start-screen" class="screen active">
+        <img src="assets/Polygon 3.png" class="floating-deco deco-cross-l" alt="crosses">
+        <img src="assets/Ellipse 5.png" class="floating-deco deco-dots-l" alt="light dots">
+        <img src="assets/Star 3.png" class="floating-deco deco-star-l" alt="star">
+
+        <img src="assets/Ellipse 5.png" class="floating-deco deco-dots-r" alt="light dots">
+        <img src="assets/Star 3.png" class="floating-deco deco-star-r" alt="star">
+        <img src="assets/Polygon 3.png" class="floating-deco deco-cross-r" alt="crosses">
+
+        <img src="assets/ring-green-base.png" class="floating-item donut-green" alt="Green Torus">
+        <img src="assets/ring-blue-base.png" class="floating-item donut-blue" alt="Blue Torus">
+        <img src="assets/ring-red-base.png" class="floating-item donut-red" alt="Red Torus">
+        <img src="assets/ring-pink-base.png" class="floating-item donut-pink" alt="Pink Torus">
+        <img src="assets/ring-orange-base.png" class="floating-item donut-orange" alt="Orange Torus">
+
+        <div class="center-content">
+            <h1 class="game-title">TORUS</h1>
+            <div class="btn-container">
+                <img src="assets/start button.png" id="start-btn" alt="Start Button">
+            </div>
+        </div>
+    </div>
+
+    <div id="difficulty-screen" class="screen">
+        <img src="assets/IMG_3943.PNG" class="diff-title" alt="Select Difficulty">
+
+        <div class="cards-container">
+            <div class="diff-card" data-level="easy">
+                <div class="card-text">Easy</div>
+                <img src="assets/icon-easy.png" class="card-icon" alt="Easy">
+            </div>
+
+            <div class="diff-card" data-level="medium">
+                <div class="card-text">Medium</div>
+                <img src="assets/icon-medium.png" class="card-icon" alt="Medium">
+            </div>
+
+            <div class="diff-card" data-level="hard">
+                <div class="card-text">Hard</div>
+                <img src="assets/icon-hard.png" class="card-icon" alt="Hard">
+            </div>
+        </div>
+
+        <div class="ok-btn-container">
+            <img src="assets/ok-button-states.png" id="ok-btn" alt="OK Button">
+        </div>
+    </div>
+
+    <div id="loading-screen" class="screen">
+        <div class="loading-container">
+            <img src="assets/Loading.......png" class="loading-text" alt="Loading...">
+        </div>
+    </div>
+
+    <div id="easy-mission-screen" class="screen">
+        <img src="assets/Mission.png" class="mission-title" alt="Mission">
+        <img src="assets/Group 43.png" class="floor-glow" alt="Floor Glow">
+
+        <div class="mission-torus-container">
+            <div class="torus-item">
+                <img src="assets/Rectangle.png" class="torus-base" alt="Green Torus">
+                <img src="assets/Ellipse 17.png" class="torus-pattern" alt="Purple Dots">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle-1.png" class="torus-base" alt="Pink Torus">
+                <img src="assets/Ellipse 19.png" class="torus-pattern" alt="Green Stars">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle-2.png" class="torus-base" alt="Blue Torus">
+                <img src="assets/Ellipse 21.png" class="torus-pattern" alt="Orange Crosses">
+            </div>
+        </div>
+
+        <div class="mission-btn-container">
+            <img src="assets/start button.png" id="mission-start-btn" class="to-game-btn" alt="Start Button">
+        </div>
+    </div>
+
+    <div id="medium-mission-screen" class="screen">
+        <img src="assets/Mission.png" class="mission-title" alt="Mission">
+        <img src="assets/IMG_4143.PNG" class="mission-clue" alt="Mission Clue">
+        <img src="assets/Group 43.png" class="floor-glow" alt="Floor Glow">
+
+        <div class="mission-torus-container">
+            <div class="torus-item">
+                <img src="assets/Rectangle-2.png" class="torus-base" alt="Blue Torus">
+                <img src="assets/Exclude.png" class="torus-pattern" alt="Red Stripes">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle11.png" class="torus-base" alt="White Torus">
+                <img src="assets/Ellipse 23.png" class="torus-pattern" alt="Blue Dots">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle-1.png" class="torus-base" alt="Pink Torus">
+            </div>
+        </div>
+
+        <div class="mission-btn-container">
+            <img src="assets/start button.png" id="medium-start-btn" class="to-game-btn" alt="Start Button">
+        </div>
+    </div>
+
+    <div id="hard-mission-screen" class="screen">
+        <img src="assets/Mission.png" class="mission-title" alt="Mission">
+        <img src="assets/IMG_4143.PNG" class="mission-clue" alt="Mission Clue">
+        <img src="assets/Group 43.png" class="floor-glow" alt="Floor Glow">
+
+        <div class="mission-torus-container">
+            <div class="torus-item">
+                <img src="assets/Rectangle-2.png" class="torus-base" alt="Blue Torus">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle11.png" class="torus-base" alt="White Torus">
+                <img src="assets/Exclude.png" class="torus-pattern" alt="Red Stripes">
+            </div>
+            <div class="torus-item">
+                <img src="assets/Rectangle12.png" class="torus-base" alt="White Cube">
+            </div>
+        </div>
+
+        <div class="mission-btn-container">
+            <img src="assets/start button.png" id="hard-start-btn" class="to-game-btn" alt="Start Button">
+        </div>
+    </div>
+
+    <div id="game-play-screen" class="screen">
+
+        <div id="game-timer">00:00</div>
+
+        <div class="side-panel left-panel">
+            <div class="panel-title">Color</div>
+            <div class="orb-grid color-grid">
+                <div class="color-orb" style="--orb-light: #FFC04C; --orb-dark: #FF8C00;" data-color="#FF9900"></div>
+                <div class="color-orb" style="--orb-light: #7CFF7C; --orb-dark: #00FF00;" data-color="#33FF33"></div>
+                <div class="color-orb" style="--orb-light: #FF99CC; --orb-dark: #FF1493;" data-color="#FF66B2"></div>
+                <div class="color-orb" style="--orb-light: #66B2FF; --orb-dark: #0044FF;" data-color="#3399FF"></div>
+                <div class="color-orb" style="--orb-light: #FF6666; --orb-dark: #FF0000;" data-color="#FF3333"></div>
+                <div class="color-orb" style="--orb-light: #FFFF88; --orb-dark: #FFD700;" data-color="#FFEA00"></div>
+            </div>
+        </div>
+
+        <div class="side-panel right-panel">
+            <div class="panel-title">Pattern</div>
+            <div class="orb-grid pattern-grid">
+                <div class="pattern-orb" data-pattern="assets/Ellipse 17.png"><img src="assets/Ellipse 17.png" class="pattern-inside"></div>
+                <div class="pattern-orb" data-pattern="assets/Ellipse 23.png"><img src="assets/Ellipse 23.png" class="pattern-inside"></div>
+                <div class="pattern-orb" data-pattern="assets/Ellipse 19.png"><img src="assets/Ellipse 19.png" class="pattern-inside"></div>
+                <div class="pattern-orb" data-pattern="assets/Ellipse 21.png"><img src="assets/Ellipse 21.png" class="pattern-inside"></div>
+                <div class="pattern-orb" data-pattern="assets/Exclude.png"><img src="assets/Exclude.png" class="pattern-inside"></div>
+            </div>
+        </div>
+
+        <img src="assets/Group 43.png" class="floor-glow game-floor-glow" alt="Floor Glow">
+        <div class="game-torus-container">
+            <div class="game-torus-item" style="--current-color: transparent;">
+                <img src="assets/Rectangle11.png" class="torus-base">
+                <div class="color-layer"></div>
+                <img src="" class="pattern-layer" style="display:none;">
+            </div>
+            <div class="game-torus-item" style="--current-color: transparent;">
+                <img src="assets/Rectangle11.png" class="torus-base">
+                <div class="color-layer"></div>
+                <img src="" class="pattern-layer" style="display:none;">
+            </div>
+            <div class="game-torus-item" style="--current-color: transparent;">
+                <img src="assets/Rectangle11.png" class="torus-base">
+                <div class="color-layer"></div>
+                <img src="" class="pattern-layer" style="display:none;">
+            </div>
+        </div>
+
+        <div class="mission-btn-container">
+            <img src="assets/ok-button-states.png" id="game-ok-btn" alt="OK Button">
+        </div>
+
+        <!-- 錯誤提示浮層 -->
+        <div id="error-overlay" class="error-overlay">
+            <div class="error-box">
+                <div class="error-icon">✕</div>
+                <div class="error-title">MISSION FAILED</div>
+                <div class="error-desc">Doesn't match the mission target!<br>Try again!</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ====== 結算畫面 ====== -->
+    <div id="record-screen" class="screen">
+        <div class="record-glass">
+            <div class="record-header">
+                <h2 class="record-title-glow">RESULTS</h2>
+                <div class="record-divider"></div>
+            </div>
+
+            <div class="record-stats">
+                <div class="stat-card stat-time">
+                    <div class="stat-icon">⏱</div>
+                    <div class="stat-label">Time</div>
+                    <div class="stat-value" id="record-time">00:00</div>
+                </div>
+                <div class="stat-card stat-score">
+                    <div class="stat-icon">★</div>
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="record-score">0</div>
+                </div>
+                <div class="stat-card stat-rank">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-label">Rank</div>
+                    <div class="stat-value" id="record-rank">S</div>
+                </div>
+            </div>
+
+            <svg class="record-chart" viewBox="0 0 300 60" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <polyline fill="none" stroke="#00E5FF" stroke-width="2"
+                    points="0,50 30,40 60,55 90,25 120,35 150,10 180,30 210,20 240,45 270,15 300,30"/>
+                <path d="M0,50 L30,40 L60,55 L90,25 L120,35 L150,10 L180,30 L210,20 L240,45 L270,15 L300,30 L300,60 L0,60 Z"
+                    fill="url(#chart-grad)" opacity="0.4"/>
+                <circle cx="150" cy="10" r="4" fill="#fff" stroke="#00E5FF" stroke-width="2"/>
+            </svg>
+
+            <img src="assets/ok-button-states.png" id="record-ok-btn" class="record-ok-btn" alt="OK Button">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
